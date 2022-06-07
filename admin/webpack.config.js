@@ -77,22 +77,23 @@ module.exports = (env, argv) => {
     });
   }
   
-  if (env.prod) {
+if (env.prod) {
   const your_domain = "0xspace.net";
   Object.assign(process.env, {
     HOST: your_domain,
     RETICULUM_SOCKET_SERVER: your_domain,
-    CORS_PROXY_SERVER: "hubs-proxy.com",
+    CORS_PROXY_SERVER: "0xspace.net:4000",
     NON_CORS_PROXY_DOMAINS: `${your_domain},dev.reticulum.io`,
     BASE_ASSETS_PATH: `https://${your_domain}:8989/`,
-    RETICULUM_SERVER: your_domain,
+    RETICULUM_SERVER: `https://${your_domain}:4000/`,
     POSTGREST_SERVER: "",
     ITA_SERVER: "",
     HOST_IP: your_domain,
   });
 }
 
-  const defaultHostName = "hubs.local";
+//  const defaultHostName = "hubs.local";
+  const defaultHostName = "0xspace.net";
   const host = process.env.HOST_IP || defaultHostName;
 
   // Remove comments from .babelrc
