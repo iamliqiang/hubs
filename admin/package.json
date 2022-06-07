@@ -10,6 +10,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server --mode=development --env.hubsCloudDev",
+    "prod": "webpack-dev-server --mode=production --env.prod=true --https --cert /etc/letsencrypt/live/0xspace.net/cert.pem --key /etc/letsencrypt/live/0xspace.net/privkey.pem",
     "dev": "webpack-dev-server --mode=development --env.dev",
     "local": "webpack-dev-server --mode=development --env.local",
     "build": "rimraf ./dist && webpack --mode=production",
