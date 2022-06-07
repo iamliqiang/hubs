@@ -86,7 +86,8 @@ if (env.prod) {
     NON_CORS_PROXY_DOMAINS: `${your_domain},dev.reticulum.io`,
     BASE_ASSETS_PATH: `https://${your_domain}:8989/`,
     RETICULUM_SERVER: your_domain,
-    POSTGREST_SERVER: `https://${your_domain}:3000`,
+//  POSTGREST_SERVER: `https://${your_domain}:3000`,
+    POSTGREST_SERVER: "",
     ITA_SERVER: "",
     HOST_IP: your_domain,
   });
