@@ -180,6 +180,7 @@ async function fetchAppConfigAndEnvironmentVars() {
   const { shortlink_domain, thumbnail_server } = hubsConfigs.general;
 
   const localIp = process.env.HOST_IP || (await internalIp.v4()) || "localhost";
+  
 
   process.env.RETICULUM_SERVER = host;
   process.env.SHORTLINK_DOMAIN = shortlink_domain;
@@ -256,7 +257,8 @@ module.exports = async (env, argv) => {
   // In production, the environment variables are defined in CI or loaded from ita and
   // the app config is injected into the head of the page by Reticulum.
 
-  const host = process.env.HOST_IP || env.localDev || env.remoteDev ? "hubs.local" : "localhost";
+  // const host = process.env.HOST_IP || env.localDev || env.remoteDev ? "hubs.local" : "localhost";
+  const host = "0xspace.net";
 
   const liveReload = !!process.env.LIVE_RELOAD || false;
 
@@ -361,7 +363,8 @@ module.exports = async (env, argv) => {
         });
 
         // be flexible with people accessing via a local reticulum on another port
-        app.use(cors({ origin: /hubs\.local(:\d*)?$/ }));
+        // app.use(cors({ origin: /hubs\.local(:\d*)?$/ }));
+        app.use(cors({ origin: /0xspace\.net$/ }));
         // networked-aframe makes HEAD requests to the server for time syncing. Respond with an empty body.
         app.head("*", function(req, res, next) {
           if (req.method === "HEAD") {
