@@ -85,8 +85,8 @@ if (env.prod) {
     CORS_PROXY_SERVER: "0xspace.net",
     NON_CORS_PROXY_DOMAINS: `${your_domain},dev.reticulum.io`,
     BASE_ASSETS_PATH: `https://${your_domain}:8989/`,
-    RETICULUM_SERVER: `https://${your_domain}`,
-    POSTGREST_SERVER: "",
+    RETICULUM_SERVER: your_domain,
+    POSTGREST_SERVER: `https://${your_domain}:3000`,
     ITA_SERVER: "",
     HOST_IP: your_domain,
   });
