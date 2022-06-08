@@ -14,33 +14,30 @@ function createHTTPSConfig() {
     const key = fs.readFileSync(path.join(__dirname, "certs", "key.pem"));
     const cert = fs.readFileSync(path.join(__dirname, "certs", "cert.pem"));
 
-    return { key, cert };
+    return {
+      key,
+      cert
+    };
   } else {
     const pems = selfsigned.generate(
-      [
-        {
-          name: "commonName",
-          value: "localhost"
-        }
-      ],
-      {
+      [{
+        name: "commonName",
+        value: "localhost"
+      }], {
         days: 365,
         algorithm: "sha256",
-        extensions: [
-          {
-            name: "subjectAltName",
-            altNames: [
-              {
-                type: 2,
-                value: "localhost"
-              },
-              {
-                type: 2,
-                value: "hubs.local"
-              }
-            ]
-          }
-        ]
+        extensions: [{
+          name: "subjectAltName",
+          altNames: [{
+              type: 2,
+              value: "localhost"
+            },
+            {
+              type: 2,
+              value: "hubs.local"
+            }
+          ]
+        }]
       }
     );
 
@@ -61,8 +58,12 @@ module.exports = (env, argv) => {
   // Load environment variables from .env files.
   // .env takes precedent over .defaults.env
   // Previously defined environment variables are not overwritten
-  dotenv.config({ path: ".env" });
-  dotenv.config({ path: ".defaults.env" });
+  dotenv.config({
+    path: ".env"
+  });
+  dotenv.config({
+    path: ".defaults.env"
+  });
 
   if (env.local) {
     Object.assign(process.env, {
@@ -76,33 +77,33 @@ module.exports = (env, argv) => {
       ITA_SERVER: ""
     });
   }
-  
-if (env.prod) {
-  const your_domain = "0xspace.net";
-  Object.assign(process.env, {
-    HOST: your_domain,
-    RETICULUM_SOCKET_SERVER: your_domain,
-    CORS_PROXY_SERVER: "",
-    NON_CORS_PROXY_DOMAINS: `${your_domain},dev.reticulum.io`,
-    BASE_ASSETS_PATH: `https://${your_domain}:8989/`,
-    RETICULUM_SERVER: your_domain,
-//  POSTGREST_SERVER: `https://${your_domain}:3000`,
-    POSTGREST_SERVER: "",
-    ITA_SERVER: "",
-    HOST_IP: your_domain,
-  });
-}
 
-//  const defaultHostName = "hubs.local";
+  if (env.prod) {
+    const your_domain = "0xspace.net";
+    Object.assign(process.env, {
+      HOST: your_domain,
+      RETICULUM_SOCKET_SERVER: your_domain,
+      CORS_PROXY_SERVER: "https://fierce-scrubland-15516.herokuapp.com/",
+      NON_CORS_PROXY_DOMAINS: `${your_domain},dev.reticulum.io`,
+      BASE_ASSETS_PATH: `https://${your_domain}:8989/`,
+      RETICULUM_SERVER: your_domain,
+      //  POSTGREST_SERVER: `https://${your_domain}:3000`,
+      POSTGREST_SERVER: "",
+      ITA_SERVER: "",
+      HOST_IP: your_domain,
+    });
+  }
+
+  //  const defaultHostName = "hubs.local";
   const defaultHostName = "0xspace.net";
   const host = process.env.HOST_IP || defaultHostName;
 
   // Remove comments from .babelrc
   const babelConfig = JSON.parse(
     fs
-      .readFileSync(path.resolve(__dirname, ".babelrc"))
-      .toString()
-      .replace(/\/\/.+/g, "")
+    .readFileSync(path.resolve(__dirname, ".babelrc"))
+    .toString()
+    .replace(/\/\/.+/g, "")
   );
 
   return {
@@ -127,11 +128,13 @@ if (env.prod) {
       headers: {
         "Access-Control-Allow-Origin": "*"
       },
-      before: function(app) {
+      before: function (app) {
         // be flexible with people accessing via a local reticulum on another port
-        app.use(cors({ origin: /hubs\.local(:\d*)?$/ }));
+        app.use(cors({
+          origin: /hubs\.local(:\d*)?$/
+        }));
         // networked-aframe makes HEAD requests to the server for time syncing. Respond with an empty body.
-        app.head("*", function(req, res, next) {
+        app.head("*", function (req, res, next) {
           if (req.method === "HEAD") {
             res.append("Date", new Date().toGMTString());
             res.send("");
@@ -148,8 +151,7 @@ if (env.prod) {
       }
     },
     module: {
-      rules: [
-        {
+      rules: [{
           test: /\.html$/,
           loader: "html-loader"
         },
@@ -157,7 +159,7 @@ if (env.prod) {
           test: /\.js$/,
           loader: "babel-loader",
           options: babelConfig,
-          exclude: function(modulePath) {
+          exclude: function (modulePath) {
             return /node_modules/.test(modulePath) && !/node_modules\/hubs/.test(modulePath);
           }
         },
@@ -172,8 +174,7 @@ if (env.prod) {
         },
         {
           test: /\.(scss|css)$/,
-          use: [
-            {
+          use: [{
               loader: MiniCssExtractPlugin.loader
             },
             {
@@ -189,7 +190,9 @@ if (env.prod) {
         },
         {
           test: /\.(glsl|frag|vert)$/,
-          use: { loader: "raw-loader" }
+          use: {
+            loader: "raw-loader"
+          }
         },
         {
           test: /\.(png|jpg|gif|glb|ogg|mp3|mp4|wav|woff2|svg|webm)$/,
@@ -221,12 +224,10 @@ if (env.prod) {
         filename: "admin.html",
         template: path.join(__dirname, "src", "admin.html")
       }),
-      new CopyWebpackPlugin([
-        {
-          from: "src/assets/images/favicon.ico",
-          to: "favicon.ico"
-        }
-      ]),
+      new CopyWebpackPlugin([{
+        from: "src/assets/images/favicon.ico",
+        to: "favicon.ico"
+      }]),
       // Extract required css and add a content hash.
       new MiniCssExtractPlugin({
         filename: "assets/stylesheets/[name]-[contenthash].css",
