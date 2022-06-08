@@ -197,7 +197,12 @@ class ImportContentComponent extends Component {
         } else {
           rurl = url;
         }
-        const res = await fetch(rurl);
+        const res = await fetch(rurl, {
+          headers: {
+            'Content-Type': "origin",
+            'Content-Type': "x-requested-with"
+          }
+        });
 
         const packUrls = (await res.text()).split("\n");
         for (const u of packUrls) {
@@ -232,7 +237,13 @@ class ImportContentComponent extends Component {
       } else {
         imurl = importUrl;
       }
-      const res = await fetch(imurl);
+
+      const res = await fetch(imurl, {
+        headers: {
+          'Content-Type': "origin",
+          'Content-Type': "x-requested-with"
+        }
+      });
 
       const type = isScene ? "scenes" : "avatars";
       const asset = (await res.json())[type][0];
