@@ -177,7 +177,8 @@ export function fetchReticulumAuthenticated(url, method = "GET", payload) {
   const retUrl = getReticulumFetchUrl(url);
   const params = {
     headers: { "content-type": "application/json" },
-    method
+    method,
+    mode: 'no-cors'
   };
   if (token) {
     params.headers.authorization = `bearer ${token}`;
