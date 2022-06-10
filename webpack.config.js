@@ -20,34 +20,31 @@ function createHTTPSConfig() {
     const key = fs.readFileSync(path.join(__dirname, "certs", "key.pem"));
     const cert = fs.readFileSync(path.join(__dirname, "certs", "cert.pem"));
 
-    return { key, cert };
+    return {
+      key,
+      cert
+    };
   } else {
     const pems = selfsigned.generate(
-      [
-        {
-          name: "commonName",
-          value: "localhost"
-        }
-      ],
-      {
+      [{
+        name: "commonName",
+        value: "localhost"
+      }], {
         days: 365,
         keySize: 2048,
         algorithm: "sha256",
-        extensions: [
-          {
-            name: "subjectAltName",
-            altNames: [
-              {
-                type: 2,
-                value: "localhost"
-              },
-              {
-                type: 2,
-                value: "hubs.local"
-              }
-            ]
-          }
-        ]
+        extensions: [{
+          name: "subjectAltName",
+          altNames: [{
+              type: 2,
+              value: "localhost"
+            },
+            {
+              type: 2,
+              value: "hubs.local"
+            }
+          ]
+        }]
       }
     );
 
@@ -148,7 +145,10 @@ async function fetchAppConfigAndEnvironmentVars() {
     throw new Error("Not logged in to Hubs Cloud. Run `npm run login` first.");
   }
 
-  const { host, token } = JSON.parse(fs.readFileSync(".ret.credentials"));
+  const {
+    host,
+    token
+  } = JSON.parse(fs.readFileSync(".ret.credentials"));
 
   const headers = {
     Authorization: `Bearer ${token}`,
@@ -156,7 +156,9 @@ async function fetchAppConfigAndEnvironmentVars() {
   };
 
   // Load the Hubs Cloud instance's app config in development
-  const appConfigsResponse = await fetch(`https://${host}/api/v1/app_configs`, { headers });
+  const appConfigsResponse = await fetch(`https://${host}/api/v1/app_configs`, {
+    headers
+  });
 
   if (!appConfigsResponse.ok) {
     throw new Error(`Error fetching Hubs Cloud config "${appConfigsResponse.statusText}"`);
@@ -169,7 +171,9 @@ async function fetchAppConfigAndEnvironmentVars() {
     return appConfig;
   }
 
-  const hubsConfigsResponse = await fetch(`https://${host}/api/ita/configs/hubs`, { headers });
+  const hubsConfigsResponse = await fetch(`https://${host}/api/ita/configs/hubs`, {
+    headers
+  });
 
   const hubsConfigs = await hubsConfigsResponse.json();
 
@@ -177,10 +181,13 @@ async function fetchAppConfigAndEnvironmentVars() {
     throw new Error(`Error fetching Hubs Cloud config "${hubsConfigsResponse.statusText}"`);
   }
 
-  const { shortlink_domain, thumbnail_server } = hubsConfigs.general;
+  const {
+    shortlink_domain,
+    thumbnail_server
+  } = hubsConfigs.general;
 
   const localIp = process.env.HOST_IP || (await internalIp.v4()) || "localhost";
-  
+
 
   process.env.RETICULUM_SERVER = host;
   process.env.SHORTLINK_DOMAIN = shortlink_domain;
@@ -191,7 +198,12 @@ async function fetchAppConfigAndEnvironmentVars() {
   return appConfig;
 }
 
-function htmlPagePlugin({ filename, extraChunks = [], chunksSortMode, inject }) {
+function htmlPagePlugin({
+  filename,
+  extraChunks = [],
+  chunksSortMode,
+  inject
+}) {
   const chunkName = filename.match(/(.+).html/)[1];
   const options = {
     filename,
@@ -214,8 +226,12 @@ module.exports = async (env, argv) => {
   // Load environment variables from .env files.
   // .env takes precedent over .defaults.env
   // Previously defined environment variables are not overwritten
-  dotenv.config({ path: ".env" });
-  dotenv.config({ path: ".defaults.env" });
+  dotenv.config({
+    path: ".env"
+  });
+  dotenv.config({
+    path: ".defaults.env"
+  });
 
   let appConfig = undefined;
 
@@ -246,7 +262,7 @@ module.exports = async (env, argv) => {
         CORS_PROXY_SERVER: "hubs-proxy.local:4000",
         NON_CORS_PROXY_DOMAINS: `${localDevHost},dev.reticulum.io`,
         BASE_ASSETS_PATH: `https://${localDevHost}:8080/`,
-        RETICULUM_SERVER: `${localDevHost}`,
+        RETICULUM_SERVER: `${localDevHost}:4000`,
         POSTGREST_SERVER: "",
         ITA_SERVER: "",
         UPLOADS_HOST: `https://${localDevHost}:4000`
@@ -263,7 +279,11 @@ module.exports = async (env, argv) => {
   const liveReload = !!process.env.LIVE_RELOAD || false;
 
   const legacyBabelConfig = {
-    presets: ["@babel/react", ["@babel/env", { targets: { ie: 11 } }]],
+    presets: ["@babel/react", ["@babel/env", {
+      targets: {
+        ie: 11
+      }
+    }]],
     plugins: [
       "@babel/proposal-class-properties",
       "@babel/proposal-object-rest-spread",
@@ -321,16 +341,33 @@ module.exports = async (env, argv) => {
       hot: liveReload,
       inline: liveReload,
       historyApiFallback: {
-        rewrites: [
-          { from: /^\/signin/, to: "/signin.html" },
-          { from: /^\/discord/, to: "/discord.html" },
-          { from: /^\/cloud/, to: "/cloud.html" },
-          { from: /^\/verify/, to: "/verify.html" },
-          { from: /^\/tokens/, to: "/tokens.html" },
-          { from: /^\/whats-new/, to: "/whats-new.html" }
+        rewrites: [{
+            from: /^\/signin/,
+            to: "/signin.html"
+          },
+          {
+            from: /^\/discord/,
+            to: "/discord.html"
+          },
+          {
+            from: /^\/cloud/,
+            to: "/cloud.html"
+          },
+          {
+            from: /^\/verify/,
+            to: "/verify.html"
+          },
+          {
+            from: /^\/tokens/,
+            to: "/tokens.html"
+          },
+          {
+            from: /^\/whats-new/,
+            to: "/whats-new.html"
+          }
         ]
       },
-      before: function(app) {
+      before: function (app) {
         // Local CORS proxy
         app.all("/cors-proxy/*", (req, res) => {
           res.header("Access-Control-Allow-Origin", "*");
@@ -353,7 +390,10 @@ module.exports = async (env, argv) => {
             res.send();
           } else {
             const url = req.originalUrl.replace("/cors-proxy/", "");
-            request({ url, method: req.method }, error => {
+            request({
+              url,
+              method: req.method
+            }, error => {
               if (error) {
                 console.error(`cors-proxy: error fetching "${url}"\n`, error);
                 return;
@@ -364,9 +404,11 @@ module.exports = async (env, argv) => {
 
         // be flexible with people accessing via a local reticulum on another port
         // app.use(cors({ origin: /hubs\.local(:\d*)?$/ }));
-        app.use(cors({ origin: /0xspace\.net(:\d*)?$/ }));
+        app.use(cors({
+          origin: /0xspace\.net(:\d*)?$/
+        }));
         // networked-aframe makes HEAD requests to the server for time syncing. Respond with an empty body.
-        app.head("*", function(req, res, next) {
+        app.head("*", function (req, res, next) {
           if (req.method === "HEAD") {
             res.append("Date", new Date().toGMTString());
             res.send("");
@@ -383,8 +425,7 @@ module.exports = async (env, argv) => {
       }
     },
     module: {
-      rules: [
-        {
+      rules: [{
           test: /\.html$/,
           loader: "html-loader",
           options: {
@@ -452,8 +493,7 @@ module.exports = async (env, argv) => {
         },
         {
           test: /\.(scss|css)$/,
-          use: [
-            {
+          use: [{
               loader: MiniCssExtractPlugin.loader
             },
             {
@@ -470,12 +510,13 @@ module.exports = async (env, argv) => {
         {
           test: /\.svg$/,
           include: [path.resolve(__dirname, "src", "react-components")],
-          use: [
-            {
+          use: [{
               loader: "@svgr/webpack",
               options: {
                 titleProp: true,
-                replaceAttrValues: { "#000": "{props.color}" },
+                replaceAttrValues: {
+                  "#000": "{props.color}"
+                },
                 template: require("./src/react-components/icons/IconTemplate"),
                 svgoConfig: {
                   plugins: {
@@ -515,7 +556,9 @@ module.exports = async (env, argv) => {
         },
         {
           test: /\.(glsl|frag|vert)$/,
-          use: { loader: "raw-loader" }
+          use: {
+            loader: "raw-loader"
+          }
         }
       ]
     },
@@ -616,18 +659,14 @@ module.exports = async (env, argv) => {
       htmlPagePlugin({
         filename: "tokens.html"
       }),
-      new CopyWebpackPlugin([
-        {
-          from: "src/hub.service.js",
-          to: "hub.service.js"
-        }
-      ]),
-      new CopyWebpackPlugin([
-        {
-          from: "src/schema.toml",
-          to: "schema.toml"
-        }
-      ]),
+      new CopyWebpackPlugin([{
+        from: "src/hub.service.js",
+        to: "hub.service.js"
+      }]),
+      new CopyWebpackPlugin([{
+        from: "src/schema.toml",
+        to: "schema.toml"
+      }]),
       // Extract required css and add a content hash.
       new MiniCssExtractPlugin({
         filename: "assets/stylesheets/[name]-[contenthash].css",
