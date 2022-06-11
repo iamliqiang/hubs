@@ -52,8 +52,9 @@ let invalidatedReticulumMetaThisSession = false;
 
 export function getReticulumFetchUrl(path, absolute = false, host = null, port = null) {
   if (host || hasReticulumServer()) {
- // return `https://${host || configs.RETICULUM_SERVER}${port ? `:${port}` : ""}${path}`;
-    return `https://${host || configs.RETICULUM_SERVER}${path}`;
+    let returl = `https://${host || configs.RETICULUM_SERVER}${port ? `:${port}` : ""}${path}`;
+    console.log("================ getReticulumFetchUrl case1 is " + returl);
+  return `https://${host || configs.RETICULUM_SERVER}${port ? `:${port}` : ""}${path}`;
   } else if (absolute) {
     resolverLink.href = path;
     return resolverLink.href;
@@ -293,6 +294,12 @@ export async function createAndRedirectToNewHub(name, sceneId, replace) {
   if (isLocalClient()) {
     url = `/hub.html?hub_id=${hub.hub_id}`;
   }
+
+  // drop 4000 port by --maxlee
+
+  var theurl = new URL(ur);
+  theurl.port = '';
+  url = theurl.toString();
 
   if (replace) {
     document.location.replace(url);
