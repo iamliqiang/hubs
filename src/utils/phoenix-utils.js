@@ -52,7 +52,7 @@ let invalidatedReticulumMetaThisSession = false;
 
 export function getReticulumFetchUrl(path, absolute = false, host = null, port = null) {
   if (host || hasReticulumServer()) {
-   // return `https://${host || configs.RETICULUM_SERVER}${port ? `:${port}` : ""}${path}`;
+ // return `https://${host || configs.RETICULUM_SERVER}${port ? `:${port}` : ""}${path}`;
     return `https://${host || configs.RETICULUM_SERVER}${path}`;
   } else if (absolute) {
     resolverLink.href = path;
@@ -262,6 +262,7 @@ export async function createAndRedirectToNewHub(name, sceneId, replace) {
 
   const hub = res;
   let url = hub.url;
+  console.log("\n\n================ THE URL IS : "+ url);
 
   const creatorAssignmentToken = hub.creator_assignment_token;
   if (creatorAssignmentToken) {
