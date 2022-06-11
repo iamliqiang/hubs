@@ -54,7 +54,8 @@ export function getReticulumFetchUrl(path, absolute = false, host = null, port =
   if (host || hasReticulumServer()) {
     let returl = `https://${host || configs.RETICULUM_SERVER}${port ? `:${port}` : ""}${path}`;
     console.log("================ getReticulumFetchUrl case1 is " + returl);
-  return `https://${host || configs.RETICULUM_SERVER}${port ? `:${port}` : ""}${path}`;
+    
+    return `https://${host || configs.RETICULUM_SERVER}${port ? `:${port}` : ""}${path}`;
   } else if (absolute) {
     resolverLink.href = path;
     return resolverLink.href;
@@ -297,7 +298,7 @@ export async function createAndRedirectToNewHub(name, sceneId, replace) {
 
   // drop 4000 port by --maxlee
 
-  var theurl = new URL(ur);
+  var theurl = new URL(url);
   theurl.port = '';
   url = theurl.toString();
 
