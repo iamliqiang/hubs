@@ -295,9 +295,9 @@ export async function createAndRedirectToNewHub(name, sceneId, replace) {
 
   // drop 4000 port by --maxlee
 
-  var theurl = new URL(url);
-  theurl.port = '';
-  url = theurl.toString();
+ // var theurl = new URL(url);
+ // theurl.port = '';
+ // url = theurl.toString();
 
   if (replace) {
     document.location.replace(url);
@@ -305,6 +305,8 @@ export async function createAndRedirectToNewHub(name, sceneId, replace) {
     document.location = url;
   }
 }
+
+
 
 export function getPresenceEntryForSession(presences, sessionId) {
   const entry = Object.entries(presences || {}).find(([k]) => k === sessionId) || [];
