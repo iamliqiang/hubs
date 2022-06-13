@@ -293,7 +293,7 @@ export async function createAndRedirectToNewHub(name, sceneId, replace) {
     url = `/hub.html?hub_id=${hub.hub_id}`;
   }
 
-  // drop 4000 port by --maxlee
+// drop 4000 port by --maxlee
 
  // var theurl = new URL(url);
  // theurl.port = '';
