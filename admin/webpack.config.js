@@ -83,7 +83,7 @@ module.exports = (env, argv) => {
     Object.assign(process.env, {
       HOST: your_domain,
       RETICULUM_SOCKET_SERVER: your_domain,
-      CORS_PROXY_SERVER: "0xspace.net:8888",
+      CORS_PROXY_SERVER: "proxy.substack.cloud:8888",
       NON_CORS_PROXY_DOMAINS: `${your_domain},dev.reticulum.io`,
       BASE_ASSETS_PATH: `https://${your_domain}:8989/`,
       RETICULUM_SERVER: your_domain,
