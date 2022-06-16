@@ -1,7 +1,7 @@
 // Primary language tags for those languages we support
 export const AVAILABLE_LOCALES = {
   en: "English",
-  zh: "简体中文",
+  zh: "中文",
   "zh-cn": "简体中文",
   pt: "Portugês (Brasil)",
   ja: "日本語",
