@@ -5,5 +5,5 @@ const navigatorLang = ((navigator.languages && navigator.languages[0]) || naviga
 //export const lang = (localeData[navigatorLang] && navigatorLang) || "en";
 //export const messages = localeData[lang] || localeData.en;
 
-export const lang =  "zh-cn";
-export const messages = localeData.zh-cn || localeData.en;
+export const lang =   (localeData[navigatorLang] && navigatorLang) || "zh-cn";
+export const messages = localeData.zh || localeData.en;
