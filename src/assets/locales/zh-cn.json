@@ -628,7 +628,7 @@
   "user-profile-sidebar.promote-button": "提升",
   "user-profile-sidebar.promote-button-disabled-label": "{displayName} 已退出.",
   "user-profile-sidebar.unhide-button": "取消隐藏",
-  "verify-modal.close-window": "请关闭此浏览器并返回 {origin}.",
+  "verify-modal.close-window": "请关闭此浏览器并返回登录页面.",
   "verify-modal.error": "email验证失败",
   "verify-modal.title": "验证",
   "verify-modal.unknown-error": "未知错误",
