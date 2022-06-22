@@ -582,7 +582,7 @@
   "sign-in-modal.signin-message.tweet": "您需要登录才能发送推文.",
   "sign-in-modal.signin-message.unpin": "您需要登录才能取消固定对象.",
   "sign-in-modal.title": "登录",
-  "sign-in-modal.wait-for-verification": "<p>电子邮件已发送至 {email}！</p><p>要继续,请使用您的手机、平板电脑或 PC 点击email中的链接.</p><p>没收到邮件，你无法创建帐户.</p>",
+  "sign-in-modal.wait-for-verification": "<p>邮件已发送至 {email}！</p><p>请登录邮箱, 点击验证邮件中的链接、完成注册/登录.</p></p>",
   "spectating-label.label": "观看",
   "tips.desktop.invite": "房间还没人. 可以用左下角的邀请按钮分享房间.",
   "tips.desktop.locomotion": "使用 {moveKeys} 键移动. 按住 shift 来加速.",
