@@ -126,7 +126,10 @@ export const SCHEMA = {
         showFPSCounter: { type: "bool", default: false },
         allowMultipleHubsInstances: { type: "bool", default: false },
         disableIdleDetection: { type: "bool", default: false },
-        fastRoomSwitching: { type: "bool", default: false },
+        fastRoomSwitching: {
+          type: "bool",
+          default: true
+        },
         lazyLoadSceneMedia: { type: "bool", default: false },
         preferMobileObjectInfoPanel: { type: "bool", default: false },
         // if unset, maxResolution = screen resolution
@@ -136,7 +139,10 @@ export const SCHEMA = {
         globalMediaVolume: { type: "number", default: 100 },
         globalSFXVolume: { type: "number", default: 100 },
         snapRotationDegrees: { type: "number", default: 45 },
-        materialQualitySetting: { type: "string", default: defaultMaterialQuality },
+        materialQualitySetting: {
+          type: "string",
+          default: "high"
+        },
         enableDynamicShadows: { type: "bool", default: false },
         disableSoundEffects: { type: "bool", default: false },
         disableMovement: { type: "bool", default: false },
@@ -148,7 +154,10 @@ export const SCHEMA = {
         disableEchoCancellation: { type: "bool", default: isFirefoxReality },
         disableNoiseSuppression: { type: "bool", default: isFirefoxReality },
         disableAutoGainControl: { type: "bool", default: isFirefoxReality },
-        locale: { type: "string", default: "browser" },
+        locale: {
+          type: "string",
+          default: "zh-cn"
+        },
         showRtcDebugPanel: { type: "bool", default: false },
         showAudioDebugPanel: { type: "bool", default: false },
         enableAudioClipping: { type: "bool", default: false },
