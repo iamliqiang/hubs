@@ -1,13 +1,14 @@
 [
   {
     "id": "hubs-default",
-    "default": true,
+    "default": false,
     "name": "Hubs Default",
     "variables": {}
   },
   {   
-    "name": "Hubs Dark Mode",
+    "name": "0xSPACE Dark Mode",
     "id": "hubs-dark-mode",
+    "default": true,
     "darkModeDefault": true,
     "variables": {
       "loading-screen-background": "radial-gradient(50% 50% at 50% 50%, #15171B 0%, #282C31 100%)",
