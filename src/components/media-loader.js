@@ -15,7 +15,6 @@ import {
   isLocalHubsAvatarUrl
 } from "../utils/media-url-utils";
 import { addAnimationComponents } from "../utils/animation";
-import qsTruthy from "../utils/qs_truthy";
 
 import loadingObjectSrc from "../assets/models/LoadingObject_Atom.glb";
 import { SOUND_MEDIA_LOADING, SOUND_MEDIA_LOADED } from "../systems/sound-effects-system";
@@ -655,9 +654,7 @@ AFRAME.registerComponent("media-pager", {
       })
       .catch(() => {}); //ignore exception, entity might not be networked
 
-    this.el.addEventListener("pdf-loaded", async () => {
-      this.update();
-    });
+    this.el.addEventListener("pdf-loaded", this.update);
   },
 
   async update(oldData) {
@@ -703,6 +700,12 @@ AFRAME.registerComponent("media-pager", {
       this.networkedEl.removeEventListener("unpinned", this.update);
     }
 
+    this.nextButton.object3D.removeEventListener("interact", this.onNext);
+    this.prevButton.object3D.removeEventListener("interact", this.onPrev);
+    this.snapButton.object3D.removeEventListener("interact", this.onSnap);
+
     window.APP.hubChannel.removeEventListener("permissions_updated", this.update);
+
+    this.el.removeEventListener("pdf-loaded", this.update);
   }
 });

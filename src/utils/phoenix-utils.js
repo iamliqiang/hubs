@@ -1,13 +1,7 @@
-import {
-  Socket
-} from "phoenix";
-import {
-  generateHubName
-} from "../utils/name-generation";
+import { Socket } from "phoenix";
+import { generateHubName } from "../utils/name-generation";
 import configs from "../utils/configs";
-import {
-  sleep
-} from "../utils/async-utils";
+import { sleep } from "../utils/async-utils";
 
 import Store from "../storage/store";
 
@@ -68,9 +62,9 @@ export function getUploadsUrl(path, absolute = false, host = null, port = null) 
   // not the full assets URL.
   const isUsingCloudflare = configs.BASE_ASSETS_PATH.includes("workers.dev");
   const uploadsHost = isUsingCloudflare ? new URL(configs.BASE_ASSETS_PATH).hostname : configs.UPLOADS_HOST;
-  return uploadsHost ?
-    `https://${uploadsHost}${port ? `:${port}` : ""}${path}` :
-    getReticulumFetchUrl(path, absolute, host, port);
+  return uploadsHost
+    ? `https://${uploadsHost}${port ? `:${port}` : ""}${path}`
+    : getReticulumFetchUrl(path, absolute, host, port);
 }
 
 export async function getReticulumMeta() {
@@ -109,10 +103,7 @@ async function refreshDirectReticulumHostAndPort() {
   const port =
     qs.get("phx_port") ||
     (hasReticulumServer() ? new URL(`${document.location.protocol}//${configs.RETICULUM_SERVER}`).port : "443");
-  directReticulumHostAndPort = {
-    host,
-    port
-  };
+  directReticulumHostAndPort = { host, port };
 }
 
 export function getDirectReticulumFetchUrl(path, absolute = false) {
@@ -121,10 +112,7 @@ export function getDirectReticulumFetchUrl(path, absolute = false) {
     return getReticulumFetchUrl(path, absolute);
   }
 
-  const {
-    host,
-    port
-  } = directReticulumHostAndPort;
+  const { host, port } = directReticulumHostAndPort;
   return getReticulumFetchUrl(path, absolute, host, port);
 }
 
@@ -138,10 +126,7 @@ export async function connectToReticulum(debug = false, params = null, socketCla
 
   const getNewSocketUrl = async () => {
     await refreshDirectReticulumHostAndPort();
-    const {
-      host,
-      port
-    } = directReticulumHostAndPort;
+    const { host, port } = directReticulumHostAndPort;
     const protocol =
       qs.get("phx_protocol") ||
       configs.RETICULUM_SOCKET_PROTOCOL ||
@@ -188,14 +173,10 @@ export function getLandingPageForPhoto(photoUrl) {
 }
 
 export function fetchReticulumAuthenticated(url, method = "GET", payload) {
-  const {
-    token
-  } = window.APP.store.state.credentials;
+  const { token } = window.APP.store.state.credentials;
   const retUrl = getReticulumFetchUrl(url);
   const params = {
-    headers: {
-      "content-type": "application/json"
-    },
+    headers: { "content-type": "application/json" },
     method
   };
   if (token) {
@@ -217,20 +198,13 @@ export function fetchReticulumAuthenticated(url, method = "GET", payload) {
 
 export async function createAndRedirectToNewHub(name, sceneId, replace) {
   const createUrl = getReticulumFetchUrl("/api/v1/hubs");
-
-  const payload = {
-    hub: {
-      name: name || generateHubName()
-    }
-  };
+  const payload = { hub: { name: name || generateHubName() } };
 
   if (sceneId) {
     payload.hub.scene_id = sceneId;
   }
 
-  const headers = {
-    "content-type": "application/json"
-  };
+  const headers = { "content-type": "application/json" };
   const store = new Store();
   if (store.state && store.state.credentials.token) {
     headers.authorization = `bearer ${store.state.credentials.token}`;
@@ -244,12 +218,7 @@ export async function createAndRedirectToNewHub(name, sceneId, replace) {
 
   if (res.error === "invalid_token") {
     // Clear the invalid token from store.
-    store.update({
-      credentials: {
-        token: null,
-        email: null
-      }
-    });
+    store.update({ credentials: { token: null, email: null } });
 
     // Create hub anonymously
     delete headers.authorization;
@@ -265,24 +234,14 @@ export async function createAndRedirectToNewHub(name, sceneId, replace) {
 
   const creatorAssignmentToken = hub.creator_assignment_token;
   if (creatorAssignmentToken) {
-    store.update({
-      creatorAssignmentTokens: [{
-        hubId: hub.hub_id,
-        creatorAssignmentToken: creatorAssignmentToken
-      }]
-    });
+    store.update({ creatorAssignmentTokens: [{ hubId: hub.hub_id, creatorAssignmentToken: creatorAssignmentToken }] });
 
     // Don't need to store the embed token if there's no creator assignment token, since that means
     // we are the owner and will get the embed token on page load.
     const embedToken = hub.embed_token;
 
     if (embedToken) {
-      store.update({
-        embedTokens: [{
-          hubId: hub.hub_id,
-          embedToken: embedToken
-        }]
-      });
+      store.update({ embedTokens: [{ hubId: hub.hub_id, embedToken: embedToken }] });
     }
   }
 
@@ -290,20 +249,12 @@ export async function createAndRedirectToNewHub(name, sceneId, replace) {
     url = `/hub.html?hub_id=${hub.hub_id}`;
   }
 
-// drop 4000 port by --maxlee
-
- // var theurl = new URL(url);
- // theurl.port = '';
- // url = theurl.toString();
-
   if (replace) {
     document.location.replace(url);
   } else {
     document.location = url;
   }
 }
-
-
 
 export function getPresenceEntryForSession(presences, sessionId) {
   const entry = Object.entries(presences || {}).find(([k]) => k === sessionId) || [];
@@ -407,11 +358,7 @@ export function hasEmbedPresences(presences) {
   return false;
 }
 
-export function denoisePresence({
-  onJoin,
-  onLeave,
-  onChange
-}) {
+export function denoisePresence({ onJoin, onLeave, onChange }) {
   return {
     rawOnJoin: (key, beforeJoin, afterJoin) => {
       if (beforeJoin === undefined) {
@@ -430,23 +377,13 @@ export function denoisePresence({
 
 export function presenceEventsForHub(events) {
   const onJoin = (key, meta) => {
-    events.trigger(`hub:join`, {
-      key,
-      meta
-    });
+    events.trigger(`hub:join`, { key, meta });
   };
   const onLeave = (key, meta) => {
-    events.trigger(`hub:leave`, {
-      key,
-      meta
-    });
+    events.trigger(`hub:leave`, { key, meta });
   };
   const onChange = (key, previous, current) => {
-    events.trigger(`hub:change`, {
-      key,
-      previous,
-      current
-    });
+    events.trigger(`hub:change`, { key, previous, current });
   };
   return {
     onJoin,
@@ -455,10 +392,7 @@ export function presenceEventsForHub(events) {
   };
 }
 
-export const tryGetMatchingMeta = async ({
-  ret_pool,
-  ret_version
-}, shouldAbandonMigration) => {
+export const tryGetMatchingMeta = async ({ ret_pool, ret_version }, shouldAbandonMigration) => {
   const backoffMS = 5000;
   const randomMS = 15000;
   const maxAttempts = 10;
@@ -476,10 +410,7 @@ export const tryGetMatchingMeta = async ({
       await sleep(delayMS);
       invalidateReticulumMeta();
       console.log(`[reconnect] Getting reticulum meta.${attempt ? ` (Attempt ${attempt + 1} of ${maxAttempts})` : ""}`);
-      const {
-        pool,
-        version
-      } = await getReticulumMeta();
+      const { pool, version } = await getReticulumMeta();
       didMatchMeta = ret_pool === pool && ret_version === version;
     } catch {
       didMatchMeta = false;

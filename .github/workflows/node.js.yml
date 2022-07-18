@@ -21,7 +21,7 @@ jobs:
         run: pm2 stop hubs_admin_server
 
       - name: Install hubs deps
-        run: npm i --force
+        run: npm ci --force
 
       - name: Build for Hubs
         run: npm run build
@@ -30,7 +30,7 @@ jobs:
         run: |
           cd admin/
           pwd
-          npm i --force
+          npm ci --force
           ls
 
       - name: Start server
