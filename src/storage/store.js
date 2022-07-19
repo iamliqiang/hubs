@@ -143,13 +143,19 @@ export const SCHEMA = {
           type: "string",
           default: "high"
         },
-        enableDynamicShadows: { type: "bool", default: false },
+        enableDynamicShadows: {
+          type: "bool",
+          default: true
+        },
         disableSoundEffects: { type: "bool", default: false },
         disableMovement: { type: "bool", default: false },
         disableBackwardsMovement: { type: "bool", default: false },
         disableStrafing: { type: "bool", default: false },
         disableTeleporter: { type: "bool", default: false },
-        disableAutoPixelRatio: { type: "bool", default: false },
+        disableAutoPixelRatio: {
+          type: "bool",
+          default: true
+        },
         movementSpeedModifier: { type: "number", default: 1 },
         disableEchoCancellation: { type: "bool", default: isFirefoxReality },
         disableNoiseSuppression: { type: "bool", default: isFirefoxReality },
