@@ -166,7 +166,10 @@ export const SCHEMA = {
         theme: { type: "string", default: getDefaultTheme()?.name },
         cursorSize: { type: "number", default: 1 },
         nametagVisibility: { type: "string", default: "showAll" },
-        nametagVisibilityDistance: { type: "number", default: 5 },
+        nametagVisibilityDistance: {
+          type: "number",
+          default: 12
+        },
         avatarVoiceLevels: { type: "object" }
       }
     },
