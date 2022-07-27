@@ -238,6 +238,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     setItaAuthToken(store.state.credentials.token);
     try {
       itaSchemas = schemaByCategories(await getItaSchemas());
+      console.log(" itaSchemas is itaSchemas..........................!!! ");
     } catch (e) {
       // Let the admin console run but skip showing configs.
     }

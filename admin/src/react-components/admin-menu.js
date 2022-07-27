@@ -210,6 +210,7 @@ class Menu extends Component {
               </ListItemIcon>
               <ListItemText className={this.props.classes.text} primary="Content CDN" />
             </ListItem>
+
           </List>
         </Collapse>
       </List>
